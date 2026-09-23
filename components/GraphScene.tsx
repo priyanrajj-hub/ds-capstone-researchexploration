@@ -62,6 +62,7 @@ const EdgeMesh = ({ start, end, inBFS }: any) => {
     ];
     const lineGeometry = new THREE.BufferGeometry().setFromPoints(points);
     return (
+        // @ts-ignore - R3F line tag conflicts with React SVG line types
         <line geometry={lineGeometry}>
             <lineBasicMaterial
                 color={inBFS ? "#40c057" : "#334155"}
@@ -338,99 +339,99 @@ export default function GraphScene({
         if (bestScore === -1) return "No valid candidates computed.";
 
         return `User ${topUser} scored highest because it shares ${sharedCount} mutual neighbors with User ${selectedNode} (Common Neighbors: ${sharedCount}), giving a Jaccard score of ${jaccard.toFixed(2)} and an Adamic–Adar score of ${aa.toFixed(2)}.`;
-  };
+    };
 
-  return (
-    <div className="w-full flex gap-4 h-[750px]">
-      <div className="flex-1 relative bg-navy/50 rounded-2xl overflow-hidden border border-white/10 flex flex-col">
-        {/* Top Control Bar */}
-        <div className="bg-navy/80 p-4 border-b border-white/10 flex justify-between items-center backdrop-blur z-10 w-full relative">
-            <div className="flex bg-black/30 rounded-lg p-1 border border-white/5">
-                <button 
-                  onClick={() => setMode('demo')} 
-                  className={`px-4 py-1 text-sm font-bold rounded-md ${mode === 'demo' ? 'bg-[#1C7293] text-white' : 'text-gray-400 hover:text-white'}`}
-                >Demo Mode (50 nodes)</button>
-                <button 
-                  onClick={() => setMode('custom')} 
-                  className={`px-4 py-1 text-sm font-bold rounded-md ${mode === 'custom' ? 'bg-[#E86A33] text-white' : 'text-gray-400 hover:text-white'}`}
-                >Custom Mode (Draw)</button>
-            </div>
+    return (
+        <div className="w-full flex gap-4 h-[750px]">
+            <div className="flex-1 relative bg-navy/50 rounded-2xl overflow-hidden border border-white/10 flex flex-col">
+                {/* Top Control Bar */}
+                <div className="bg-navy/80 p-4 border-b border-white/10 flex justify-between items-center backdrop-blur z-10 w-full relative">
+                    <div className="flex bg-black/30 rounded-lg p-1 border border-white/5">
+                        <button
+                            onClick={() => setMode('demo')}
+                            className={`px-4 py-1 text-sm font-bold rounded-md ${mode === 'demo' ? 'bg-[#1C7293] text-white' : 'text-gray-400 hover:text-white'}`}
+                        >Demo Mode (50 nodes)</button>
+                        <button
+                            onClick={() => setMode('custom')}
+                            className={`px-4 py-1 text-sm font-bold rounded-md ${mode === 'custom' ? 'bg-[#E86A33] text-white' : 'text-gray-400 hover:text-white'}`}
+                        >Custom Mode (Draw)</button>
+                    </div>
 
-            <div className="flex gap-2 items-center">
-                 <span className="text-sm text-gray-400 mr-2">Playback:</span>
-                 <button onClick={resetBFS} disabled={selectedNode === null} className="px-3 bg-white/10 rounded hover:bg-white/20 disabled:opacity-30">⏮</button>
-                 <button onClick={() => setBfs(p => ({...p, playing: !p.playing}))} disabled={selectedNode === null || bfs.depth >= 3} className="px-3 bg-[#40c057] rounded text-white disabled:opacity-30 hover:bg-[#37b24d]">{bfs.playing ? '⏸' : '▶'}</button>
-                 <button onClick={stepForward} disabled={selectedNode === null || bfs.depth >= 3} className="px-3 bg-white/10 rounded hover:bg-white/20 disabled:opacity-30">⏭</button>
-                 <button onClick={stepToEnd} disabled={selectedNode === null || bfs.depth >= 3} className="px-3 bg-white/10 rounded hover:bg-white/20 disabled:opacity-30">⏭⏭</button>
-                 <select value={speed} onChange={e => setSpeed(Number(e.target.value))} className="bg-black/50 border border-white/20 rounded text-sm px-2 py-1 outline-none text-white ml-2">
-                     <option value={0.5}>0.5x</option>
-                     <option value={1}>1x</option>
-                     <option value={2}>2x</option>
-                 </select>
-            </div>
-        </div>
-
-        {/* 3D Canvas area */}
-        <div className="flex-1 relative">
-            <Canvas camera={{ position: [0, 0, 30] }}>
-                <ambientLight intensity={0.5} />
-                <pointLight position={[10, 10, 10]} />
-                <OrbitControls enablePan={true} enableZoom={true} enableRotate={true} />
-                
-                {mode === 'custom' && <ClickPlane onAddNode={handleCanvasClick} />}
-
-                {graph.edges.map((e: any, i: number) => {
-                    // Match visual nodes layout array
-                    const start = layoutedNodes.find(n => n.id === e.source);
-                    const end = layoutedNodes.find(n => n.id === e.target);
-                    if (!start || !end) return null;
-                    const inBFS = bfs.depth > 0 && (bfs.visited.has(start.id) && bfs.visited.has(end.id));
-                    return <EdgeMesh key={i} start={start} end={end} inBFS={inBFS} />;
-                })}
-
-                {layoutedNodes.map((n: any) => {
-                    let status = 'none';
-                    if (selectedNode === n.id) status = 'active';
-                    else if (bfs.depth === 1 && bfs.frontier.includes(n.id)) status = 'frontier-1';
-                    else if (bfs.depth === 2 && bfs.frontier.includes(n.id)) status = 'frontier-2';
-                    else if (bfs.visited.has(n.id)) status = 'visited';
-
-                    return (
-                        <NodeMesh
-                            key={n.id}
-                            node={n}
-                            isSelected={selectedNode === n.id || connectingNode === n.id}
-                            bfsStatus={status}
-                            onClick={handleNodeClick}
-                            onRightClick={handleNodeRightClick}
-                        />
-                    );
-                })}
-            </Canvas>
-
-            {mode === 'custom' && (
-                <div className="absolute bottom-4 left-4 text-xs bg-black/60 p-2 rounded backdrop-blur border border-red-500/30 text-red-100">
-                    <strong>Custom Graph Builder</strong><br />
-                    - Click empty space to add Node ({graph.nodes.length}/15)<br />
-                    - Click Node A then Node B to link<br />
-                    - Right click to delete Node
+                    <div className="flex gap-2 items-center">
+                        <span className="text-sm text-gray-400 mr-2">Playback:</span>
+                        <button onClick={resetBFS} disabled={selectedNode === null} className="px-3 bg-white/10 rounded hover:bg-white/20 disabled:opacity-30">⏮</button>
+                        <button onClick={() => setBfs(p => ({ ...p, playing: !p.playing }))} disabled={selectedNode === null || bfs.depth >= 3} className="px-3 bg-[#40c057] rounded text-white disabled:opacity-30 hover:bg-[#37b24d]">{bfs.playing ? '⏸' : '▶'}</button>
+                        <button onClick={stepForward} disabled={selectedNode === null || bfs.depth >= 3} className="px-3 bg-white/10 rounded hover:bg-white/20 disabled:opacity-30">⏭</button>
+                        <button onClick={stepToEnd} disabled={selectedNode === null || bfs.depth >= 3} className="px-3 bg-white/10 rounded hover:bg-white/20 disabled:opacity-30">⏭⏭</button>
+                        <select value={speed} onChange={e => setSpeed(Number(e.target.value))} className="bg-black/50 border border-white/20 rounded text-sm px-2 py-1 outline-none text-white ml-2">
+                            <option value={0.5}>0.5x</option>
+                            <option value={1}>1x</option>
+                            <option value={2}>2x</option>
+                        </select>
+                    </div>
                 </div>
-            )}
-            
-            <div className="absolute top-4 right-4 bg-navy/80 p-4 rounded-xl border border-white/10 w-64 backdrop-blur shadow-xl">
-                 <h4 className="font-serif font-bold text-lg mb-2">Live BFS Analyzer</h4>
-                 <div className="space-y-1 text-sm border-b border-white/10 pb-3 mb-3">
-                     <p>Selected: <strong className="text-[#E86A33]">{selectedNode !== null ? `Node ${selectedNode}` : 'None'}</strong></p>
-                     <p>Current Depth: <strong className="text-white">{bfs.depth}</strong></p>
-                     <p>Frontier Size: <strong className="text-white">{bfs.frontier.length}</strong></p>
-                 </div>
-                 <div className="text-xs text-gray-300 leading-tight">
-                     {getExplanationText()}
-                 </div>
-                 
+
+                {/* 3D Canvas area */}
+                <div className="flex-1 relative">
+                    <Canvas camera={{ position: [0, 0, 30] }}>
+                        <ambientLight intensity={0.5} />
+                        <pointLight position={[10, 10, 10]} />
+                        <OrbitControls enablePan={true} enableZoom={true} enableRotate={true} />
+
+                        {mode === 'custom' && <ClickPlane onAddNode={handleCanvasClick} />}
+
+                        {graph.edges.map((e: any, i: number) => {
+                            // Match visual nodes layout array
+                            const start = layoutedNodes.find(n => n.id === e.source);
+                            const end = layoutedNodes.find(n => n.id === e.target);
+                            if (!start || !end) return null;
+                            const inBFS = bfs.depth > 0 && (bfs.visited.has(start.id) && bfs.visited.has(end.id));
+                            return <EdgeMesh key={i} start={start} end={end} inBFS={inBFS} />;
+                        })}
+
+                        {layoutedNodes.map((n: any) => {
+                            let status = 'none';
+                            if (selectedNode === n.id) status = 'active';
+                            else if (bfs.depth === 1 && bfs.frontier.includes(n.id)) status = 'frontier-1';
+                            else if (bfs.depth === 2 && bfs.frontier.includes(n.id)) status = 'frontier-2';
+                            else if (bfs.visited.has(n.id)) status = 'visited';
+
+                            return (
+                                <NodeMesh
+                                    key={n.id}
+                                    node={n}
+                                    isSelected={selectedNode === n.id || connectingNode === n.id}
+                                    bfsStatus={status}
+                                    onClick={handleNodeClick}
+                                    onRightClick={handleNodeRightClick}
+                                />
+                            );
+                        })}
+                    </Canvas>
+
+                    {mode === 'custom' && (
+                        <div className="absolute bottom-4 left-4 text-xs bg-black/60 p-2 rounded backdrop-blur border border-red-500/30 text-red-100">
+                            <strong>Custom Graph Builder</strong><br />
+                            - Click empty space to add Node ({graph.nodes.length}/15)<br />
+                            - Click Node A then Node B to link<br />
+                            - Right click to delete Node
+                        </div>
+                    )}
+
+                    <div className="absolute top-4 right-4 bg-navy/80 p-4 rounded-xl border border-white/10 w-64 backdrop-blur shadow-xl">
+                        <h4 className="font-serif font-bold text-lg mb-2">Live BFS Analyzer</h4>
+                        <div className="space-y-1 text-sm border-b border-white/10 pb-3 mb-3">
+                            <p>Selected: <strong className="text-[#E86A33]">{selectedNode !== null ? `Node ${selectedNode}` : 'None'}</strong></p>
+                            <p>Current Depth: <strong className="text-white">{bfs.depth}</strong></p>
+                            <p>Frontier Size: <strong className="text-white">{bfs.frontier.length}</strong></p>
+                        </div>
+                        <div className="text-xs text-gray-300 leading-tight">
+                            {getExplanationText()}
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 }

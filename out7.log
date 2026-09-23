@@ -1,0 +1,22 @@
+
+> graph-explainer@1.0.0 build
+> next build
+
+  ▲ Next.js 14.2.3
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+Failed to compile.
+
+./components/GraphScene.tsx:65:15
+Type error: Type '{ children: Element; geometry: BufferGeometry<NormalBufferAttributes>; }' is not assignable to type 'SVGLineElementAttributes<SVGLineElement>'.
+  Property 'geometry' does not exist on type 'SVGLineElementAttributes<SVGLineElement>'.
+
+[0m [90m 63 |[39m     [36mconst[39m lineGeometry [33m=[39m [36mnew[39m [33mTHREE[39m[33m.[39m[33mBufferGeometry[39m()[33m.[39msetFromPoints(points)[33m;[39m[0m
+[0m [90m 64 |[39m     [36mreturn[39m ([0m
+[0m[31m[1m>[22m[39m[90m 65 |[39m         [33m<[39m[33mline[39m geometry[33m=[39m{lineGeometry}[33m>[39m[0m
+[0m [90m    |[39m               [31m[1m^[22m[39m[0m
+[0m [90m 66 |[39m             [33m<[39m[33mlineBasicMaterial[39m[0m
+[0m [90m 67 |[39m                 color[33m=[39m{inBFS [33m?[39m [32m"#40c057"[39m [33m:[39m [32m"#334155"[39m}[0m
+[0m [90m 68 |[39m                 transparent[0m
