@@ -1,5 +1,4 @@
 import "./globals.css";
-import 'katex/dist/katex.min.css';
 import type { Metadata } from 'next';
 import GlobalLayoutWrapper from "@/components/GlobalSidebar";
 
@@ -15,6 +14,9 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en">
+            <head>
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" />
+            </head>
             <body className="antialiased min-h-screen font-sans bg-navy text-light">
                 <GlobalLayoutWrapper>
                     {children}
