@@ -1,17 +1,21 @@
 import React from 'react';
 import PageTemplate from '@/components/PageTemplate';
+import AppGallery from '@/components/AppGallery';
 
-export default function GenericPage() {
+export default function RealApplicationsPage() {
     return (
         <PageTemplate
             title="Real Applications"
-            definition="Exploring the core algorithms powering billions of connections."
-            whyItExists={<p>This page is currently being structured with interactive WebGL representations.</p>}
+            definition="How different networks demand fundamentally different graph architectures."
+            whyItExists={
+                <p>
+                    A single "Graph Algorithm" does not fit all. Meta uses high-clustering adjacency lists to find dense triangles. LinkedIn uses sparse traversal to connect recruiters across long chains. X (Twitter) manages massive asymmetric hubs where 90% of the network follows 10% of the users.
+                </p>
+            }
+            prevPage={{ name: "Algorithm Comparison", path: "/ranking/comparison" }}
+            nextPage={{ name: "Billion-User Scale Challenges", path: "/industry/scale" }}
         >
-            <div className="h-64 flex flex-col items-center justify-center bg-black/20 rounded-2xl border border-dashed border-white/10">
-                <span className="text-gray-400 font-mono tracking-widest text-lg">[ Visualization Mount Point ]</span>
-                <span className="text-gray-500 font-bold mt-2">Coming Soon</span>
-            </div>
+            <AppGallery />
         </PageTemplate>
     );
 }

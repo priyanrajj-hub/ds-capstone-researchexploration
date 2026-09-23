@@ -1,4 +1,5 @@
-import React from 'react';
+"use client";
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 
 interface PageTemplateProps {
@@ -22,11 +23,36 @@ export default function PageTemplate({
     nextPage,
     children
 }: PageTemplateProps) {
+    const [isSimple, setIsSimple] = useState(false);
+
+    useEffect(() => {
+        const checkMode = () => {
+            const mode = localStorage.getItem('explainer_mode');
+            setIsSimple(mode === 'simple');
+        };
+        checkMode();
+        window.addEventListener('storage', checkMode);
+        return () => window.removeEventListener('storage', checkMode);
+    }, []);
+
+    // Translation logic for Big-O masks
+    const translateComplexity = (bigO: string) => {
+        if (!isSimple) return bigO;
+        if (bigO.includes("O(1)")) return "Instantaneous";
+        if (bigO.includes("O(V²)")) return "Exponentially bad / Massive memory";
+        if (bigO.includes("Math.min")) return "Very Fast";
+        if (bigO.includes("O(V + E)")) return "Extremely Efficient (Scale-free)";
+        if (bigO.includes("O(E)")) return "Slow / Heavy scanning";
+        if (bigO.includes("O(Deg")) return "Bounded instantly by friends count";
+        return bigO; // fallback
+    };
+
     return (
         <div className="max-w-6xl mx-auto px-6 py-12 lg:px-12 w-full flex flex-col min-h-[calc(100vh-64px)]">
             <div className="space-y-4 mb-10 border-b border-white/10 pb-8">
-                <h1 className="text-3xl md:text-5xl font-serif font-bold text-white leading-tight">
+                <h1 className="text-3xl md:text-5xl font-serif font-bold text-white leading-tight flex items-center justify-between">
                     {title}
+                    {isSimple && <span className="text-xs bg-[#40c057]/20 text-[#40c057] px-3 py-1 rounded-full uppercase tracking-widest border border-[#40c057]/20">Simple Mode Active</span>}
                 </h1>
                 <p className="text-xl text-[#1C7293] font-medium leading-relaxed">
                     {definition}
@@ -45,14 +71,16 @@ export default function PageTemplate({
             <div className="grid md:grid-cols-2 gap-6 mb-16">
                 {complexity && (
                     <div className="bg-black/20 p-6 rounded-2xl border border-white/5 space-y-2">
-                        <h4 className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-4">Theoretical Complexity</h4>
+                        <h4 className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-4">
+                            {isSimple ? "How Heavy is this approach?" : "Theoretical Complexity"}
+                        </h4>
                         <div className="flex justify-between items-center bg-white/5 px-4 py-3 rounded-lg">
-                            <span className="text-gray-400">Space (Memory)</span>
-                            <span className="font-mono font-bold text-red-400">{complexity.space}</span>
+                            <span className="text-gray-400">Space (Memory requirements)</span>
+                            <span className="font-mono font-bold text-red-400">{translateComplexity(complexity.space)}</span>
                         </div>
                         <div className="flex justify-between items-center bg-white/5 px-4 py-3 rounded-lg">
-                            <span className="text-gray-400">Time (Retrieval)</span>
-                            <span className="font-mono font-bold text-[#40c057]">{complexity.time}</span>
+                            <span className="text-gray-400">Time (Speed of looking up friends)</span>
+                            <span className="font-mono font-bold text-[#40c057]">{translateComplexity(complexity.time)}</span>
                         </div>
                     </div>
                 )}
@@ -67,7 +95,7 @@ export default function PageTemplate({
                 )}
             </div>
 
-            <div className="flex-1" /> {/* Spacer */}
+            <div className="flex-1" />
 
             {/* Pagination */}
             <div className="flex flex-col sm:flex-row justify-between items-center pt-8 border-t border-white/10 mt-12 gap-4">
