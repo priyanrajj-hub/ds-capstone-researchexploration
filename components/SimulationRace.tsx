@@ -86,7 +86,7 @@ export default function SimulationRace({ graph, selectedNodeId = 7 }: { graph?: 
             <div className="flex justify-between items-center mb-6">
                 <div>
                     <h3 className="text-2xl font-bold font-serif text-white">Live Time-Complexity Race</h3>
-                    <p className="text-gray-400">Finding 2nd-Degree friends for <strong className="text-[#E86A33]">Node {selectedNodeId !== null ?\`#\${selectedNodeId}\` : '(Unselected)'}</strong></p>
+                    <p className="text-gray-400">Finding 2nd-Degree friends for <strong className="text-[#E86A33]">Node {selectedNodeId !== null ?`#${selectedNodeId}` : '(Unselected)'}</strong></p>
                 </div>
                 <button
                     onClick={runSimulation}
@@ -103,7 +103,7 @@ export default function SimulationRace({ graph, selectedNodeId = 7 }: { graph?: 
                     <h4 className="font-bold text-gray-200 mb-2">Adjacency Matrix</h4>
                     <div className="h-32 w-full grid grid-cols-10 grid-rows-10 gap-0.5 opacity-50 mb-4 bg-black/50 p-2 rounded overflow-hidden">
                         {Array.from({ length: Math.min(100, activeSize * activeSize) }).map((_, i) => (
-                            <div key={i} className={\`w-full h-full rounded-sm \${isRunning && !matrixFinished && i < (matrixCount % 100) ? 'bg-red-500' : 'bg-gray-700'}\`} />
+                            <div key={i} className={`w-full h-full rounded-sm ${isRunning && !matrixFinished && i < (matrixCount % 100) ? 'bg-red-500' : 'bg-gray-700'}`} />
                         ))}
                     </div>
                     <div className="text-3xl font-bold text-red-400">{matrixCount.toLocaleString()}</div>
@@ -116,7 +116,7 @@ export default function SimulationRace({ graph, selectedNodeId = 7 }: { graph?: 
                     <h4 className="font-bold text-gray-200 mb-2">Edge List</h4>
                     <div className="h-32 w-full flex flex-col gap-1 overflow-hidden opacity-50 mb-4 bg-black/50 p-2 rounded">
                         {activeEdges.slice(0, 15).map((e: any, i: number) => (
-                            <div key={i} className={\`w-full h-2 rounded-sm \${isRunning && !edgeFinished && i < (edgeCount % 15) ? 'bg-yellow-500' : 'bg-gray-700'}\`} />
+                            <div key={i} className={`w-full h-2 rounded-sm ${isRunning && !edgeFinished && i < (edgeCount % 15) ? 'bg-yellow-500' : 'bg-gray-700'}`} />
                         ))}
                     </div>
                     <div className="text-3xl font-bold text-yellow-400">{edgeCount.toLocaleString()}</div>
@@ -128,7 +128,7 @@ export default function SimulationRace({ graph, selectedNodeId = 7 }: { graph?: 
                 <div className="bg-navy/40 p-6 rounded-xl border border-white/5 relative">
                     <h4 className="font-bold text-gray-200 mb-2">Adjacency List (Map)</h4>
                     <div className="h-32 w-full flex items-center justify-center opacity-80 mb-4 bg-black/50 p-2 rounded">
-                        <div className={\`w-16 h-16 rounded-full border-4 border-[#40c057] flex items-center justify-center \${isRunning ? 'scale-110 shadow-[0_0_20px_#40c057]' : ''} transition-all\`}>
+                        <div className={`w-16 h-16 rounded-full border-4 border-[#40c057] flex items-center justify-center ${isRunning ? 'scale-110 shadow-[0_0_20px_#40c057]' : ''} transition-all`}>
                         <span className="font-bold text-[#40c057]">#{selectedNodeId !== null ? selectedNodeId : '?'}</span>
                     </div>
                 </div>

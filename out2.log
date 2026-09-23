@@ -1,0 +1,19 @@
+
+> graph-explainer@1.0.0 build
+> next build
+
+  ▲ Next.js 14.2.3
+
+   Creating an optimized production build ...
+Failed to compile.
+
+./components/GraphScene.tsx
+Module not found: Can't resolve 'd3-force-3d'
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+./app/page.tsx
+
+
+> Build failed because of webpack errors

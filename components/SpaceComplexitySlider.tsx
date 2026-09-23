@@ -61,7 +61,7 @@ export default function SpaceComplexitySlider({ graph }: { graph: any }) {
           <div className="w-full bg-navy/30 h-6 rounded-md relative border border-white/5">
             <div
               className="h-full bg-red-500/80 rounded-md transition-all duration-[20ms] whitespace-nowrap overflow-visible flex items-center pr-2 text-xs font-bold shadow-[0_0_15px_rgba(239,68,68,0.5)]"
-              style={{ width: \`\${matrixWidth}%\` }}
+              style={{ width: `${matrixWidth}%` }}
             >
             {matrixWidth > 110 && <span className="ml-full pl-4 text-red-300 tracking-widest absolute -right-24 bg-red-900/80 px-2 rounded">OVERFLOW!</span>}
           </div>
@@ -76,7 +76,7 @@ export default function SpaceComplexitySlider({ graph }: { graph: any }) {
         <div className="w-full bg-navy/30 h-6 rounded-md overflow-hidden border border-white/5">
           <div
             className="h-full bg-yellow-500/80 rounded-md transition-all duration-75 shadow-[0_0_15px_rgba(234,179,8,0.5)]"
-            style={{ width: \`\${Math.min((edgeListBytes / maxSafeBytes) * 100, 100)}%\` }}
+            style={{ width: `${Math.min((edgeListBytes / maxSafeBytes) * 100, 100)}%` }}
             />
         </div>
       </div>
@@ -89,7 +89,7 @@ export default function SpaceComplexitySlider({ graph }: { graph: any }) {
         <div className="w-full bg-navy/30 h-6 rounded-md overflow-hidden border border-white/5">
           <div
             className="h-full bg-[#40c057]/80 rounded-md transition-all duration-75 shadow-[0_0_15px_rgba(64,192,87,0.5)]"
-            style={{ width: \`\${Math.min((adjListBytes / maxSafeBytes) * 100, 100)}%\` }}
+            style={{ width: `${Math.min((adjListBytes / maxSafeBytes) * 100, 100)}%` }}
             />
         </div>
       </div>

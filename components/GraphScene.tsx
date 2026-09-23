@@ -337,7 +337,7 @@ export default function GraphScene({
 
         if (bestScore === -1) return "No valid candidates computed.";
 
-        return \`User \${topUser} scored highest because it shares \${sharedCount} mutual neighbors with User \${selectedNode} (Common Neighbors: \${sharedCount}), giving a Jaccard score of \${jaccard.toFixed(2)} and an Adamic–Adar score of \${aa.toFixed(2)}.\`;
+        return `User ${topUser} scored highest because it shares ${sharedCount} mutual neighbors with User ${selectedNode} (Common Neighbors: ${sharedCount}), giving a Jaccard score of ${jaccard.toFixed(2)} and an Adamic–Adar score of ${aa.toFixed(2)}.`;
   };
 
   return (
@@ -348,11 +348,11 @@ export default function GraphScene({
             <div className="flex bg-black/30 rounded-lg p-1 border border-white/5">
                 <button 
                   onClick={() => setMode('demo')} 
-                  className={\`px-4 py-1 text-sm font-bold rounded-md \${mode === 'demo' ? 'bg-[#1C7293] text-white' : 'text-gray-400 hover:text-white'}\`}
+                  className={`px-4 py-1 text-sm font-bold rounded-md ${mode === 'demo' ? 'bg-[#1C7293] text-white' : 'text-gray-400 hover:text-white'}`}
                 >Demo Mode (50 nodes)</button>
                 <button 
                   onClick={() => setMode('custom')} 
-                  className={\`px-4 py-1 text-sm font-bold rounded-md \${mode === 'custom' ? 'bg-[#E86A33] text-white' : 'text-gray-400 hover:text-white'}\`}
+                  className={`px-4 py-1 text-sm font-bold rounded-md ${mode === 'custom' ? 'bg-[#E86A33] text-white' : 'text-gray-400 hover:text-white'}`}
                 >Custom Mode (Draw)</button>
             </div>
 
@@ -420,7 +420,7 @@ export default function GraphScene({
             <div className="absolute top-4 right-4 bg-navy/80 p-4 rounded-xl border border-white/10 w-64 backdrop-blur shadow-xl">
                  <h4 className="font-serif font-bold text-lg mb-2">Live BFS Analyzer</h4>
                  <div className="space-y-1 text-sm border-b border-white/10 pb-3 mb-3">
-                     <p>Selected: <strong className="text-[#E86A33]">{selectedNode !== null ? \`Node \${selectedNode}\` : 'None'}</strong></p>
+                     <p>Selected: <strong className="text-[#E86A33]">{selectedNode !== null ? `Node ${selectedNode}` : 'None'}</strong></p>
                      <p>Current Depth: <strong className="text-white">{bfs.depth}</strong></p>
                      <p>Frontier Size: <strong className="text-white">{bfs.frontier.length}</strong></p>
                  </div>

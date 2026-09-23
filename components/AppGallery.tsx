@@ -26,7 +26,7 @@ const companies = [
         id: 'x',
         name: 'X (Twitter)',
         color: '#ffffff',
-        problem: 'A totally asymmetric graph (you follow Elon, he doesn\\'t follow you) where a tweet must fan- out to millions of timelines instantly.',
+        problem: 'A totally asymmetric graph (you follow Elon, he does not follow you) where a tweet must fan- out to millions of timelines instantly.',
         whyGraph: 'Needs to query "Who follows User A?" perfectly distinct from "Who does User A follow?" Directed graphs naturally separate In-Degree and Out-Degree.',
     algorithm: 'Real-time RealGraph (SimRank variants). It computes edge weights based on interactions (retweets, likes) rather than just binary follow status.',
     gain: 'Powers the "For You" algorithm, surfacing tweets from people your friends interact with heavily.'
@@ -45,7 +45,7 @@ export default function AppGallery() {
                     <button 
                         key={c.id} 
                         onClick={() => setActive(c)}
-                        className={\`px-6 py-2 rounded-full font-bold transition-all \${active.id === c.id ? '' : 'opacity-50 hover:opacity-100 bg-white/5'}\`}
+                        className={`px-6 py-2 rounded-full font-bold transition-all ${active.id === c.id ? '' : 'opacity-50 hover:opacity-100 bg-white/5'}`}
                         style={{ backgroundColor: active.id === c.id ? c.color : undefined, color: active.id === c.id && c.id === 'x' ? 'black' : 'white' }}
                     >
                         {c.name}
@@ -89,7 +89,7 @@ export default function AppGallery() {
                             <p className="text-sm text-gray-300 italic">"Same internal graph data structure, entirely different user product."</p>
                         </div>
                         {/* Background visual motif matching color */}
-                        <div className="absolute inset-0 opacity-10" style={{ background: \`radial-gradient(circle at center, \${active.color}, transparent 70%)\` }} />
+                        <div className="absolute inset-0 opacity-10" style={{ background: `radial-gradient(circle at center, ${active.color}, transparent 70%)` }} />
                     </div>
                 </motion.div>
             </AnimatePresence>
