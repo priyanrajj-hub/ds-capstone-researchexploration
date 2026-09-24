@@ -1,7 +1,2 @@
-node_modules
-.next
-.env
-log.txt
-remote.txt
-
-.vercel
+node_modules/ 
+.next/ 

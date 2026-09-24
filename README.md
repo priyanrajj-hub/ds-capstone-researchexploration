@@ -4,86 +4,65 @@
 
 This repository contains the interactive explainer website built for researching and visualizing how Social Networks implement Friend Recommendation Systems (like LinkedIn's "People You May Know" widget) at a billion-user scale.
 
----
+![Hero Screenshot Placeholder](/public/placeholder-hero.png)
 
-## 🔍 What is being solved?
+## ✨ Features
 
-Given a social graph **G = (V, E)**, where V represents users and E represents connections, the goal is to find non-adjacent pairs (u, v) that are highly likely to form a future connection.
+- **Interactive Graph Visualizer:** Build your own graph, draw edges, and watch algorithms traverse it step-by-step.
+- **Topological Algorithm Generators:** Animated generators for BFS, Common Neighbors, Jaccard, Adamic-Adar, PPR, and min-heaps.
+- **Industrial ML Pipeline Funnel:** A 5-stage interactive tradeoff slider demonstrating cost vs recall at 1B+ scale.
+- **Ranking Lab:** Adjust Logistic Regression weights and see Re-ranking candidate diversity penalties in real-time.
+- **Vector Embeddings & ANN:** Visual scatter-plot comparison of Brute Force vs Grid-based Approximate Nearest Neighbors (ANN) simulating Two-Tower architecture.
+- **Cyclic Feedback Loop:** A mini-game simulating user connections and UI interactions to automatically retrain the affinity model.
+- **Metrics Dashboard:** Real-time offline metric charts simulating Precision@K, Recall@K, NDCG@K and ROC curves.
 
-## 🚀 Why it matters?
+## 🧮 Algorithm Table
 
-- **Helps users** discover relevant people and expand their network.
-- **Increases engagement** and overall network growth.
-- **Builds professional opportunities** for users globally.
-- **Requires extremely efficient algorithms** to scale to millions or billions of active users.
+| Algorithm | Category | Complexity | Intuition |
+| --- | --- | --- | --- |
+| BFS N-Hop | Candidate Gen | `O(d^k)` | Triadic closure 2nd degree search. |
+| Common Neighbors | Heuristic | `O(N)` | Intersection size of mutual friends. |
+| Jaccard Similarity | Heuristic | `O(N)` | Normalized intersection over union. |
+| Adamic-Adar | Heuristic | `O(N)` | Strongly penalizes highly popular mutual friends (hubs). |
+| Personalized PageRank | Random Walk | `O(Walks*Steps)` | Walk probability distribution favoring local clusters. |
+| Min-Heap (Top K) | Selection | `O(N log K)` | Selects the absolute best K candidates efficiently. |
 
----
+## 🛠 How to run locally
 
-## ⚙️ The Industrial Recommendation Pipeline
+### Install Dependencies
 
-The recommendation system follows a strict 5-step cyclic pipeline:
+```bash
+npm install
+```
 
-### 1. Graph Data
+### Start Development Server
 
-*Users and their relationships.*
-The raw data structural representation is **G = (V, E)**. User nodes are connected by edges representing confirmed friendships or follows.
+```bash
+npm run dev
+```
 
-### 2. Candidate Generation (Retrieval)
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-*Find a small set of plausible candidates from a large user base.*
+## 📁 Folder Structure
 
-- **Graph-based retrieval:** N-hop traversal, Personalized PageRank (PPR), Common Neighbors.
-- **Embedding-based retrieval:** Two-Tower Neural Networks, ANN (Approximate Nearest Neighbor).
-- **Heuristic retrieval:** Matching by same company, school, or location.
-**Output:** A few thousand candidates narrowed down from 1B+ users.
+```text
+graph-explainer/
+├── lib/
+│   ├── graph/           # Pure TS adjacency-list Graph engine
+│   └── algorithms/      # Step generators (BFS, Jaccard, Adamic-Adar, PPR)
+├── components/
+│   └── visualizer/      # SVG GraphCanvas, Playback Controls, CodePanel
+└── app/
+    ├── algorithms/      # Dynamic algorithm pages mapped to lib data
+    ├── pipeline/        # Funnel slider demo
+    ├── ranking/         # Logistic regression lab
+    ├── embeddings/      # Simulated Two-Tower ANN vector space
+    ├── feedback/        # Explicit/Implicit feedback loop UI
+    ├── evaluation/      # Precision@K & NDCG Charts
+    └── learn/           # Citations and academic overview
+```
 
-### 3. Ranking
+## 🏆 Credits
 
-*Score and rank candidates using multiple signals.*
-
-- **Feature generation:** Extracting graph topology, profile similarity, and historical behavior.
-- **Ranking models:** Logistic Regression, Gradient Boosted Decision Trees (GBDT), Neural models.
-- **Re-ranking:** Adjusting for diversity, freshness, and strict business rules.
-**Output:** The absolute Top-K recommendations (e.g., the top 10–50 users).
-
-### 4. User Interface
-
-*Display personalized recommendations.*
-The final Top-K candidates are rendered into UI cards (e.g., the LinkedIn "Connections you may know" carousel). Each card is the resulting proof of retrieval + ranking + business algorithms running in real-time.
-
-### 5. Feedback Loop
-
-*User actions continuously improve the system.*
-
-- **Connect** (Positive Explicit Signal)
-- **Remove** (Negative Explicit Signal)
-- **View Profile** (Implicit Signal)
-- **Other Interactions** (Clicks, follows, messages)
-*This feedback is strictly used to retrain the ML models and update the dynamic graph!*
-
----
-
-## 🧮 Key Algorithms Used in Industry
-
-- **N-hop / BFS** (Graph Traversal)
-- **Common Neighbors, Jaccard, Adamic–Adar** (Topological Scoring)
-- **Personalized PageRank (PPR)** (Random Walks)
-- **Two-Tower Neural Network** (Embedding Retrieval)
-- **Approximate Nearest Neighbor (ANN) Search**
-- **Logistic Regression / Gradient Boosting** (Ranking)
-- **Neural Ranking / Multi-task Learning**
-- **Heuristic rules** (Geospatial and categorical overlaps)
-
-## 🌍 Real-World Scale (e.g., LinkedIn)
-
-- **1B+ users** (Inventory)
-- **Few thousand candidates** filtered after initial retrieval.
-- **Few hundred** candidates retained after initial AI ranking.
-- **Top-K (e.g., 10–50)** actually shown in the UI.
-- The system must constantly optimize for **relevance, diversity, fairness, latency, and compute cost**.
-
-## 🎯 Final Outcome
-
-- More meaningful professional connections.
-- Higher overall user engagement.
-- A continuously improving, scalable, and highly efficient system powered entirely by user feedback and graph data structures.
+- UX design inspired by [See Algorithms](https://see-algorithms.com/), heavily utilizing interactive step-playback. (Note: No code or content was copied directly from See Algorithms).
+- Citations: Liben-Nowell & Kleinberg (2007), Adamic & Adar (2003), Backstrom & Leskovec (2011), Pinterest Pixie, HNSW, GraphSAGE.
