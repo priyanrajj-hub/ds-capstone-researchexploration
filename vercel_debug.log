@@ -1,0 +1,120 @@
+Vercel CLI 59.11.7 (Node.js 24.18.0)
+> [debug] [2026-09-24T15:27:18.572Z] Agent/TTY/nonInteractive: isAgent=true agentName=antigravity stdin.isTTY=true --non-interactive=false explicitFalse=false => nonInteractive=false
+> [debug] [2026-09-24T15:27:18.573Z] user supplied known subcommand: "build"
+> [debug] [2026-09-24T15:27:18.894Z] Found ".vercel\repo.json" - detected "C:\Users\PRIYANRAJ J\.gemini\antigravity\scratch\graph-explainer" as repo root
+> [debug] [2026-09-24T15:27:18.898Z] Found ".vercel\repo.json" - detected "C:\Users\PRIYANRAJ J\.gemini\antigravity\scratch\graph-explainer" as repo root
+> [debug] [2026-09-24T15:27:18.900Z] Spinner invoked (Retrieving project…) with a 1000ms delay
+> [debug] [2026-09-24T15:27:18.901Z] Valid access token, skipping token refresh.
+> [debug] [2026-09-24T15:27:18.916Z] #1 → GET https://api.vercel.com/teams/team_Fq4bXxHjwJnvjpSkSfvrFz4w?teamId=team_Fq4bXxHjwJnvjpSkSfvrFz4w
+> [debug] [2026-09-24T15:27:18.917Z] #2 → GET https://api.vercel.com/v9/projects/prj_3MSh1GZKbOnvCoQRUuhj6KMtuiQe?teamId=team_Fq4bXxHjwJnvjpSkSfvrFz4w
+> [debug] [2026-09-24T15:27:20.164Z] #1 ← 200 OK: sfo1::hngxx-1790263653001-35d26db182af [1.25s]
+> [debug] [2026-09-24T15:27:20.167Z] #2 ← 404 Not Found: sfo1::hx584-1790263653001-7c1d630acfa0 [1.25s]
+Your Project was either deleted, transferred to a new Team, or you don’t have access to it anymore.
+
+  Directory       ~\.gemini\antigravity\scratch\graph-explainer
+
+> [debug] [2026-09-24T15:27:20.232Z] Spinner invoked (Loading teams…) with a 1000ms delay
+> [debug] [2026-09-24T15:27:20.233Z] #3 → GET https://api.vercel.com/v2/user
+> [debug] [2026-09-24T15:27:20.233Z] #4 → GET https://api.vercel.com/v1/teams
+> [debug] [2026-09-24T15:27:20.576Z] #3 ← 200 OK: sfo1::22bd5-1790263653469-ddd6ff313f74 [343ms]
+> [debug] [2026-09-24T15:27:20.662Z] #4 ← 200 OK: sfo1::t2ccm-1790263653473-dfd17525f6ef [429ms]
+  Team            priyanraj
+> [debug] [2026-09-24T15:27:20.664Z] Spinner invoked (Searching for existing projects…) with a 1000ms delay
+> [debug] [2026-09-24T15:27:20.665Z] Found ".vercel\repo.json" - detected "C:\Users\PRIYANRAJ J\.gemini\antigravity\scratch\graph-explainer" as repo root
+> [debug] [2026-09-24T15:27:20.906Z] #5 → GET https://api.vercel.com/v9/projects?repoUrl=https%3A%2F%2Fgithub.com%2Fpriyanrajj-hub%2Fds-capstone-researchexploration.git&limit=100&teamId=team_Fq4bXxHjwJnvjpSkSfvrFz4w
+> [debug] [2026-09-24T15:27:21.280Z] #5 ← 200 OK: sfo1::tr89n-1790263654155-11b865d508ef [374ms]
+> [debug] [2026-09-24T15:27:21.285Z] Found ".vercel\repo.json" - detected "C:\Users\PRIYANRAJ J\.gemini\antigravity\scratch\graph-explainer" as repo root
+
+✓ Linked          priyanraj/ds-capstone-researchexploration
+> Downloading `preview` environment variables for priyanraj/ds-capstone-researchexploration
+> [debug] [2026-09-24T15:27:21.291Z] Spinner invoked (Downloading) with a 300ms delay
+> [debug] [2026-09-24T15:27:21.291Z] Fetching Environment Variables of prj_SOM59ZXpml3U97KYVBGytSikPMwY and target preview
+> [debug] [2026-09-24T15:27:21.292Z] #6 → GET https://api.vercel.com/v3/env/pull/prj_SOM59ZXpml3U97KYVBGytSikPMwY/preview?source=vercel-cli%3Apull&teamId=team_Fq4bXxHjwJnvjpSkSfvrFz4w
+> [debug] [2026-09-24T15:27:21.665Z] #6 ← 200 OK: sfo1::5fnq6-1790263654545-cdd38b0a3f3f [373ms]
+> [debug] [2026-09-24T15:27:21.667Z] Fetching Environment Variables of project prj_SOM59ZXpml3U97KYVBGytSikPMwY and target preview
+> [debug] [2026-09-24T15:27:21.668Z] #7 → GET https://api.vercel.com/v10/projects/prj_SOM59ZXpml3U97KYVBGytSikPMwY/env?target=preview&source=vercel-cli%3Apull&teamId=team_Fq4bXxHjwJnvjpSkSfvrFz4w
+> [debug] [2026-09-24T15:27:22.052Z] #7 ← 200 OK: sfo1::t5rg4-1790263654922-c0c52ffb1a76 [384ms]
+
+✓ Created         .vercel\.env.preview.local file
+
+> Downloading project settings
+Downloaded project settings to ~\.gemini\antigravity\scratch\graph-explainer\.vercel\project.json [0ms]
+WARNING! Build not running on Vercel. System environment variables will not be available.
+> [debug] [2026-09-24T15:27:22.063Z] Loaded environment variables from "C:\Users\PRIYANRAJ J\.gemini\antigravity\scratch\graph-explainer\.vercel\.env.preview.local"
+> [debug] [2026-09-24T15:27:22.071Z] First deployment: evaluating framework detection (workPath="C:\Users\PRIYANRAJ J\.gemini\antigravity\scratch\graph-explainer", configuredFramework=<none>)
+> [debug] [2026-09-24T15:27:22.072Z] isFirstDeployment: VERCEL_FIRST_DEPLOYMENT=<unset> -> false
+> [debug] [2026-09-24T15:27:22.072Z] First deployment: skipping framework detection because this is not a first deployment
+> [debug] [2026-09-24T15:27:22.077Z] Locating files C:\Users\PRIYANRAJ J\.gemini\antigravity\scratch\graph-explainer
+> [debug] [2026-09-24T15:27:22.078Z] Ignoring C:\Users\PRIYANRAJ J\.gemini\antigravity\scratch\graph-explainer\.env.local
+> [debug] [2026-09-24T15:27:22.078Z] Ignoring C:\Users\PRIYANRAJ J\.gemini\antigravity\scratch\graph-explainer\.git
+> [debug] [2026-09-24T15:27:22.079Z] Ignoring C:\Users\PRIYANRAJ J\.gemini\antigravity\scratch\graph-explainer\.gitignore
+> [debug] [2026-09-24T15:27:22.079Z] Ignoring C:\Users\PRIYANRAJ J\.gemini\antigravity\scratch\graph-explainer\.next
+> [debug] [2026-09-24T15:27:22.079Z] Ignoring C:\Users\PRIYANRAJ J\.gemini\antigravity\scratch\graph-explainer\.vercel
+> [debug] [2026-09-24T15:27:22.080Z] Ignoring C:\Users\PRIYANRAJ J\.gemini\antigravity\scratch\graph-explainer\node_modules
+> [debug] [2026-09-24T15:27:22.082Z] Locating files C:\Users\PRIYANRAJ J\.gemini\antigravity\scratch\graph-explainer [5ms]
+> [debug] [2026-09-24T15:27:22.083Z] Framework detection: VERCEL_FRAMEWORK_DETECTION=<unset> -> disabled
+> [debug] [2026-09-24T15:27:22.083Z] Framework detection: VERCEL_FRAMEWORK_DETECTION=<unset> -> disabled
+> [debug] [2026-09-24T15:27:25.124Z] Imported Builder "@vercel/static-build" from "C:\Users\PRIYANRAJ J\AppData\Roaming\npm\node_modules\vercel\node_modules\@vercel\static-build"
+> [debug] [2026-09-24T15:27:25.125Z] Resolved builders: "@vercel/static-build => 9.0.1"
+> [debug] [2026-09-24T15:27:25.133Z] Setting env VERCEL_PROJECT_SETTINGS_NODE_VERSION to "24.x"
+> [debug] [2026-09-24T15:27:25.134Z] Building entrypoint "package.json" with "@vercel/static-build"
+Installing dependencies...
+
+up to date in 598ms
+
+51 packages are looking for funding
+  run `npm fund` for details
+Running "npm run build"
+
+> graph-explainer@1.0.0 build
+> next build
+
+Attention: Next.js now collects completely anonymous telemetry regarding usage.
+This information is used to shape Next.js' roadmap and prioritize features.
+You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+https://nextjs.org/telemetry
+
+  ▲ Next.js 14.2.3
+  - Environments: .env.local
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/16) ...
+   Generating static pages (4/16) 
+   Generating static pages (8/16) 
+   Generating static pages (12/16) 
+ ✓ Generating static pages (16/16)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                              Size     First Load JS
+┌ ○ /                                    175 B          94.5 kB
+├ ○ /_not-found                          875 B          88.3 kB
+├ ● /algorithms/[slug]                   234 kB          321 kB
+├   ├ /algorithms/bfs-nhop
+├   ├ /algorithms/common-neighbors
+├   ├ /algorithms/jaccard
+├   └ [+3 more paths]
+├ ○ /embeddings                          4.7 kB           99 kB
+├ ○ /evaluation                          104 kB          199 kB
+├ ○ /feedback                            4.42 kB         135 kB
+├ ○ /learn                               175 B          94.5 kB
+├ ○ /pipeline                            3.03 kB         134 kB
+└ ○ /ranking                             4.32 kB         135 kB
++ First Load JS shared by all            87.5 kB
+  ├ chunks/23-a8249037afad2b77.js        31.6 kB
+  ├ chunks/fd9d1056-3c0a5e4377f054b9.js  53.6 kB
+  └ other shared chunks (total)          2.21 kB
+
+
+○  (Static)  prerendered as static content
+●  (SSG)     prerendered as static HTML (uses getStaticProps)
+
+Error: No Output Directory named "dist" found after the Build completed. Configure the Output Directory in your Project Settings. Alternatively, configure vercel.json#outputDirectory.
+Learn More: https://vercel.link/missing-public-directory
+> [debug] [2026-09-24T15:27:39.940Z] Vercel CLI 59.11.7 (Node.js 24.18.0)
+
+> [debug] [2026-09-24T15:27:41.144Z] Telemetry subprocess killed due to timeout
+> [debug] [2026-09-24T15:27:41.151Z] Telemetry subprocess exited with code null

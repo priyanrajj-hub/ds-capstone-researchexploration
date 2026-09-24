@@ -1,0 +1,56 @@
+51 packages are looking for funding
+  run `npm fund` for details
+Running "npm run build"
+
+> graph-explainer@1.0.0 build
+> next build
+
+Attention: Next.js now collects completely anonymous telemetry regarding usage.
+This information is used to shape Next.js' roadmap and prioritize features.
+You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+https://nextjs.org/telemetry
+
+  ▲ Next.js 14.2.3
+  - Environments: .env.local
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/16) ...
+   Generating static pages (4/16) 
+   Generating static pages (8/16) 
+   Generating static pages (12/16) 
+ ✓ Generating static pages (16/16)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                              Size     First Load JS
+┌ ○ /                                    175 B          94.5 kB
+├ ○ /_not-found                          875 B          88.3 kB
+├ ● /algorithms/[slug]                   234 kB          321 kB
+├   ├ /algorithms/bfs-nhop
+├   ├ /algorithms/common-neighbors
+├   ├ /algorithms/jaccard
+├   └ [+3 more paths]
+├ ○ /embeddings                          4.7 kB           99 kB
+├ ○ /evaluation                          104 kB          199 kB
+├ ○ /feedback                            4.42 kB         135 kB
+├ ○ /learn                               175 B          94.5 kB
+├ ○ /pipeline                            3.03 kB         134 kB
+└ ○ /ranking                             4.32 kB         135 kB
++ First Load JS shared by all            87.5 kB
+  ├ chunks/23-a8249037afad2b77.js        31.6 kB
+  ├ chunks/fd9d1056-3c0a5e4377f054b9.js  53.6 kB
+  └ other shared chunks (total)          2.21 kB
+
+
+○  (Static)  prerendered as static content
+●  (SSG)     prerendered as static HTML (uses getStaticProps)
+
+Error: No Output Directory named "dist" found after the Build completed. Configure the Output Directory in your Project Settings. Alternatively, configure vercel.json#outputDirectory.
+Learn More: https://vercel.link/missing-public-directory
+> [debug] [2026-09-24T15:27:39.940Z] Vercel CLI 59.11.7 (Node.js 24.18.0)
+
+> [debug] [2026-09-24T15:27:41.144Z] Telemetry subprocess killed due to timeout
+> [debug] [2026-09-24T15:27:41.151Z] Telemetry subprocess exited with code null
