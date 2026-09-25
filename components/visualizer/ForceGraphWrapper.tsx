@@ -25,10 +25,17 @@ export default function ForceGraphWrapper({ graph, currentStep, onNodeClick }: W
         });
 
         return {
-            nodes: graph.getNodes().map(n => ({ id: n.id, name: n.label })),
+            nodes: graph.getNodes().map(n => ({
+                id: n.id,
+                name: n.label,
+                // Assign deterministic, non-zero starting points to prevent D3 NaN repulsive explosions at [0,0,0]
+                x: (Math.random() - 0.5) * 200,
+                y: (Math.random() - 0.5) * 200,
+                z: (Math.random() - 0.5) * 200,
+            })),
             links: extractedLinks
         };
-    }, [graph, currentStep]);
+    }, [graph]);
 
     const getNodeColor = useCallback((node: any) => {
         let isHighlighted = currentStep?.highlightNodes?.includes(node.id);
@@ -43,11 +50,16 @@ export default function ForceGraphWrapper({ graph, currentStep, onNodeClick }: W
         return hl ? "#1C7293" : "#5B6B75";
     }, [currentStep]);
 
+    if (graphData.nodes.length === 0) {
+        return <div className="flex items-center justify-center w-full h-full text-teal font-bold animate-pulse">Initializing Visualization Core...</div>;
+    }
+
     return (
         <ForceGraph3D
             ref={fgRef as any}
             graphData={graphData}
             nodeResolution={32}
+            nodeColor={getNodeColor}
             linkColor={getLinkColor}
             linkWidth={(link: any) => {
                 const u = link.source.id || link.source;
@@ -55,32 +67,27 @@ export default function ForceGraphWrapper({ graph, currentStep, onNodeClick }: W
                 const hl = currentStep?.highlightEdges?.some(e => (e.u === u && e.v === v) || (e.v === u && e.u === v));
                 return hl ? 3 : 1;
             }}
+            nodeThreeObjectExtend={true}
             nodeThreeObject={(node: any) => {
-                const group = new THREE.Group();
-                const color = getNodeColor(node);
-
-                // Sphere
-                const geometry = new THREE.SphereGeometry(5);
-                const material = new THREE.MeshLambertMaterial({
-                    color: color,
-                    transparent: true,
-                    opacity: 0.9
-                });
-                const sphere = new THREE.Mesh(geometry, material);
-                group.add(sphere);
-
-                // Label
+                if (node.id === 'A') {
+                    console.log(`[DEBUG] Node A pos:`, node.x, node.y, node.z);
+                }
                 const sprite = new SpriteText(node.name);
                 sprite.color = '#ffffff';
                 sprite.textHeight = 4;
                 sprite.position.y = 8;
-                group.add(sprite);
-
-                return group;
+                return sprite;
             }}
             onEngineStop={() => {
                 if (!initialZoomDone && fgRef.current) {
-                    fgRef.current.zoomToFit(400, 50);
+                    const N = graphData.nodes.length;
+                    if (N > 0) {
+                        try {
+                            fgRef.current.zoomToFit(800, 40);
+                        } catch (e) {
+                            console.error("ZoomToFit bounds failed", e);
+                        }
+                    }
                     setInitialZoomDone(true);
                 }
             }}
