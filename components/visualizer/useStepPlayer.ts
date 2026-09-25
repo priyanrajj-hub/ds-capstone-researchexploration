@@ -28,10 +28,6 @@ export function useStepPlayer<T>(generatorFn: () => Generator<AlgorithmStep, T, 
         setIsPlaying(false);
     }, [generatorFn]);
 
-    useEffect(() => {
-        reset();
-    }, [reset]);
-
     const stepForward = useCallback(() => {
         if (currentStepIndex < stepsHistory.length - 1) {
             setCurrentStepIndex(prev => prev + 1);

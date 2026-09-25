@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { AlgorithmContent } from '../lib/algorithms/types';
 import { GraphCanvas, PlaybackControls, useStepPlayer, CodePanel, ScoreTable } from './visualizer';
 import { Graph, getTinyTutorialGraph } from '../lib/graph';
@@ -22,7 +22,14 @@ export default function AlgorithmLayout({ content }: AlgorithmLayoutProps) {
         setGraph(getTinyTutorialGraph());
     }, [content.id]);
 
-    const getGenerator = () => {
+    useEffect(() => {
+        if (!graph) return;
+        player.reset();
+        // Disabling Exhaustive-Deps: We deliberately do NOT want to trigger a reset on every `player` object re-draw
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [graph, content.id]);
+
+    const getGenerator = useCallback(() => {
         if (!graph) return function* () { yield { type: 'done' as const, message: 'No graph' }; }();
         switch (content.id) {
             case 'bfs-nhop': return bfsNHop(graph, rootNode, 2);
@@ -36,15 +43,13 @@ export default function AlgorithmLayout({ content }: AlgorithmLayoutProps) {
             ]);
             default: return function* () { yield { type: 'done' as const, message: 'Unknown algo' }; }();
         }
-    };
+    }, [graph, content.id, rootNode]);
 
     const player = useStepPlayer(getGenerator as any);
 
-    useEffect(() => {
+    const handleGraphChange = useCallback(() => {
         player.reset();
-    }, [rootNode, content.id]);
-
-    const handleGraphChange = () => player.reset();
+    }, [player]);
 
     if (!graph) return null;
 
