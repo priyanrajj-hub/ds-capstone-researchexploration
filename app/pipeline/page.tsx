@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Home, Database, Search, ArrowDownUp, CheckSquare, RefreshCw } from 'lucide-react';
+import { Home, Database, Search, ArrowDownUp, CheckSquare, RefreshCw, HelpCircle, X } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const STAGES = [
@@ -18,6 +18,7 @@ export default function PipelinePage() {
     const [retrieval, setRetrieval] = useState(2000);
     const [ranking, setRanking] = useState(500);
     const [ui, setUi] = useState(15);
+    const [showHelp, setShowHelp] = useState(false);
 
     const cost = (retrieval * 0.1 + ranking * 5).toFixed(2);
     const falseNegativeRisk = ((1 - (retrieval / users)) * 100).toFixed(6);
@@ -26,8 +27,45 @@ export default function PipelinePage() {
         <div className="min-h-screen bg-navy text-light pb-32">
             <nav className="p-4 bg-white/5 border-b border-white/10 flex items-center justify-between">
                 <Link href="/" className="flex items-center gap-2 hover:text-white transition font-bold"><Home size={18} /> Explainer</Link>
-                <span className="text-teal font-bold tracking-widest uppercase text-sm">Industrial Pipeline</span>
+                <div className="flex items-center gap-4">
+                    <button onClick={() => setShowHelp(true)} className="flex items-center gap-2 text-teal hover:text-white transition bg-white/10 px-3 py-1.5 rounded-full text-sm font-bold">
+                        <HelpCircle size={16} /> How to Use
+                    </button>
+                    <span className="text-teal font-bold tracking-widest uppercase text-sm">Industrial Pipeline</span>
+                </div>
             </nav>
+
+            {showHelp && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+                    <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-navy border border-white/20 p-8 rounded-2xl max-w-2xl w-full relative max-h-[85vh] overflow-y-auto shadow-2xl">
+                        <button onClick={() => setShowHelp(false)} className="absolute top-6 right-6 text-gray-400 hover:text-white"><X size={24} /></button>
+                        <h2 className="text-2xl font-serif font-bold text-white mb-6">User Manual: Pipeline Funnel</h2>
+
+                        <div className="space-y-6 text-gray-300">
+                            <div>
+                                <h3 className="text-white font-bold mb-2">1. The Goal</h3>
+                                <p>This page simulates how companies like Meta or LinkedIn filter down billions of users to find a few friend recommendations. It's a pipeline of stages, from fast/cheap filters to slow/expensive AI models.</p>
+                            </div>
+                            <div>
+                                <h3 className="text-white font-bold mb-2">2. Interacting with the Funnel Constraints</h3>
+                                <p>Scroll down to the "Funnel Constraints" section. You can drag the sliders to see what happens when you let more (or fewer) candidates pass through each stage.</p>
+                                <ul className="list-disc pl-5 mt-2 space-y-2">
+                                    <li><strong>Retrieval Pool:</strong> Controls how many users survive the first, cheap cutoff (BFS). Increasing this lowers your "Absolute Recall Loss", meaning you're less likely to accidentally throw away a perfect match.</li>
+                                    <li><strong>Heavy Ranker Pool:</strong> Controls how many users are sent to the complex ML model. Notice how the <span className="text-white font-mono">Estimated Compute Cost</span> skyrockets when you increase this!</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h3 className="text-white font-bold mb-2">3. Exploring the Stages</h3>
+                                <p>Click the 5 circular icons at the top of the page (Graph Data, Candidate Generation, etc.) to learn what algorithms are running under the hood during that specific step.</p>
+                            </div>
+                            <div>
+                                <h3 className="text-white font-bold mb-2">4. See it in Action</h3>
+                                <p>When you're ready, click the <strong>Start Full Pipeline Demo</strong> button at the bottom of the page to watch a live, 3D visualization of the first stage (Candidate Generation via BFS) in action.</p>
+                            </div>
+                        </div>
+                    </motion.div>
+                </div>
+            )}
 
             <main className="max-w-6xl mx-auto px-4 py-12 space-y-16">
                 <header className="space-y-4">
@@ -107,7 +145,7 @@ export default function PipelinePage() {
                     </div>
 
                     <div className="flex flex-col justify-center bg-white/5 p-6 rounded-2xl border border-white/10 space-y-4">
-                        <h3 className="text-xl font-bold text-[#1C7293]">System Trade-offs</h3>
+                        <h3 className="text-xl font-bold text-white">System Trade-offs</h3>
                         <div className="flex justify-between items-center pb-2 border-b border-white/10">
                             <span className="text-gray-300">Estimated Compute Cost</span>
                             <span className="font-mono text-white text-lg">~{cost} ms</span>
@@ -124,7 +162,9 @@ export default function PipelinePage() {
                 <section className="bg-white/5 p-12 rounded-3xl border border-white/10 text-center">
                     <h2 className="text-4xl font-serif font-bold text-white mb-4">End-to-End Walkthrough</h2>
                     <p className="text-gray-300 mb-8 max-w-2xl mx-auto">Select a node from our sample network and watch it flow all the way to a "People You May Know" card.</p>
-                    <button className="px-8 py-4 bg-teal hover:bg-ocean text-white font-bold rounded-xl transition-colors shadow-lg">Start Full Pipeline Demo</button>
+                    <Link href="/algorithms/bfs-nhop">
+                        <button className="px-8 py-4 bg-teal hover:bg-ocean text-navy hover:text-white font-bold rounded-xl transition-colors shadow-lg">Start Full Pipeline Demo</button>
+                    </Link>
                 </section>
 
             </main>

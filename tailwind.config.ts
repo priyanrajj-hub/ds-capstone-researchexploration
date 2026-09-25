@@ -9,11 +9,11 @@ const config: Config = {
     theme: {
         extend: {
             colors: {
-                navy: "#21295C",
-                ocean: "#065A82",
-                teal: "#1C7293",
-                light: "#F4F8FA",
-                muted: "#5B6B75"
+                navy: "#000000",
+                ocean: "#333333",
+                teal: "#FFFFFF",
+                light: "#F9F9F9",
+                muted: "#888888"
             },
             fontFamily: {
                 serif: ["Cambria", "Fraunces", "serif"],
