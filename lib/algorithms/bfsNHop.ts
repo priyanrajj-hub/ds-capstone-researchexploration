@@ -6,7 +6,7 @@ export function* bfsNHop(graph: Graph, startNode: string, maxHop: number): Gener
     const queue: { node: string, hop: number }[] = [];
 
     if (!graph.getNode(startNode)) {
-        yield { type: 'done', message: `Node ${startNode} not found.` };
+        yield { stepIndex: 0, totalSteps: 0, action: 'done', currentNode: startNode, stepExplanation: `Node ${startNode} not found.` };
         return;
     }
 
@@ -14,33 +14,55 @@ export function* bfsNHop(graph: Graph, startNode: string, maxHop: number): Gener
     queue.push({ node: startNode, hop: 0 });
 
     yield {
-        type: 'info',
+        stepIndex: 0, totalSteps: 0,
+        action: 'enqueue',
+        currentNode: startNode,
+        queueContents: queue.map(q => q.node),
+        visitedSet: Array.from(visited),
         highlightNodes: [startNode],
-        message: `Starting BFS at node ${startNode}. Hop level 0.`,
-        codeLine: 1
+        stepExplanation: `Starting BFS at root node ${startNode}. Added to Queue.`,
+        codeLine: 2
     };
 
     while (queue.length > 0) {
         const current = queue.shift()!;
 
         yield {
-            type: 'highlight',
+            stepIndex: 0, totalSteps: 0,
+            action: 'visit',
+            currentNode: current.node,
+            queueContents: queue.map(q => q.node),
+            visitedSet: Array.from(visited),
             highlightNodes: [current.node],
-            message: `Visiting ${current.node} at hop ${current.hop}.`,
-            codeLine: 3
+            stepExplanation: `De-queued ${current.node}. We are currently at hop distance ${current.hop}.`,
+            codeLine: 4
         };
 
         if (current.hop >= maxHop) {
+            yield {
+                stepIndex: 0, totalSteps: 0,
+                action: 'skip',
+                currentNode: current.node,
+                queueContents: queue.map(q => q.node),
+                visitedSet: Array.from(visited),
+                highlightNodes: [current.node],
+                stepExplanation: `Hop distance is ${current.hop}, which meets our maxHop limit. Terminating exploration from this node to prevent combinatorial explosion.`,
+                codeLine: 5
+            };
             continue;
         }
 
         const neighbors = graph.neighbors(current.node);
         for (const neighbor of neighbors) {
             yield {
-                type: 'highlight',
+                stepIndex: 0, totalSteps: 0,
+                action: 'visit',
+                currentNode: current.node,
+                queueContents: queue.map(q => q.node),
+                visitedSet: Array.from(visited),
                 highlightEdges: [{ u: current.node, v: neighbor }],
-                message: `Checking edge from ${current.node} to ${neighbor}.`,
-                codeLine: 5
+                stepExplanation: `Checking neighbor ${neighbor} of current node ${current.node}.`,
+                codeLine: 6
             };
 
             if (!visited.has(neighbor)) {
@@ -48,20 +70,29 @@ export function* bfsNHop(graph: Graph, startNode: string, maxHop: number): Gener
                 queue.push({ node: neighbor, hop: current.hop + 1 });
 
                 yield {
-                    type: 'info',
+                    stepIndex: 0, totalSteps: 0,
+                    action: 'enqueue',
+                    currentNode: neighbor,
+                    queueContents: queue.map(q => q.node),
+                    visitedSet: Array.from(visited),
                     highlightNodes: [neighbor],
-                    message: `Discovered new node ${neighbor} at hop ${current.hop + 1}. Added to queue.`,
-                    codeLine: 7
+                    stepExplanation: `${neighbor} has not been visited before. Adding it to the visited set and the queue for future exploration at hop ${current.hop + 1}.`,
+                    codeLine: 9
                 };
             } else {
                 yield {
-                    type: 'info',
-                    message: `${neighbor} is already visited. Skipping.`,
-                    codeLine: 9
+                    stepIndex: 0, totalSteps: 0,
+                    action: 'skip',
+                    currentNode: neighbor,
+                    queueContents: queue.map(q => q.node),
+                    visitedSet: Array.from(visited),
+                    highlightNodes: [neighbor],
+                    stepExplanation: `${neighbor} is completely skipped because it was already visited via a much shorter path.`,
+                    codeLine: 7
                 };
             }
         }
     }
 
-    yield { type: 'done', message: 'BFS traversal complete.' };
+    yield { stepIndex: 0, totalSteps: 0, action: 'done', currentNode: '-', stepExplanation: 'BFS traversal fully completed. Max depth boundaries were respected.' };
 }

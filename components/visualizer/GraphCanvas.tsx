@@ -10,9 +10,10 @@ interface GraphCanvasProps {
     graph: Graph;
     onGraphChange?: () => void;
     currentStep?: AlgorithmStep | null;
+    onNodeClick?: (nodeId: string) => void;
 }
 
-export function GraphCanvas({ graph, onGraphChange, currentStep }: GraphCanvasProps) {
+export function GraphCanvas({ graph, onGraphChange, currentStep, onNodeClick }: GraphCanvasProps) {
     const [, setTick] = useState(0);
     const [dragNode, setDragNode] = useState<string | null>(null);
     const [edgeDrawStart, setEdgeDrawStart] = useState<string | null>(null);
@@ -89,7 +90,7 @@ export function GraphCanvas({ graph, onGraphChange, currentStep }: GraphCanvasPr
 
             {is3D ? (
                 <div className="w-full h-full absolute inset-0 cursor-move">
-                    <ForceGraph3DWrapper graph={graph} currentStep={currentStep} />
+                    <ForceGraph3DWrapper graph={graph} currentStep={currentStep} onNodeClick={onNodeClick} />
                 </div>
             ) : (
                 <svg
@@ -134,7 +135,7 @@ export function GraphCanvas({ graph, onGraphChange, currentStep }: GraphCanvasPr
                         let isHighlighted = currentStep?.highlightNodes?.includes(node.id);
                         const score = currentStep?.scores?.[node.id];
                         let fillColor = "#21295C";
-                        if (isHighlighted) fillColor = (currentStep && currentStep.type === 'score') ? "#10B981" : "#1C7293";
+                        if (isHighlighted) fillColor = (currentStep && currentStep.action === 'score') ? "#10B981" : "#1C7293";
 
                         return (
                             <g

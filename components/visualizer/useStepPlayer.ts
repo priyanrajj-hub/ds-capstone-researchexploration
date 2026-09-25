@@ -7,11 +7,23 @@ export function useStepPlayer<T>(generatorFn: () => Generator<AlgorithmStep, T, 
     const [isPlaying, setIsPlaying] = useState(false);
     const [speed, setSpeed] = useState(1000);
 
-    const generatorRef = useRef<Generator<AlgorithmStep, T, unknown> | null>(null);
-
     const reset = useCallback(() => {
-        generatorRef.current = generatorFn();
-        setStepsHistory([]);
+        const gen = generatorFn();
+        const allSteps: AlgorithmStep[] = [];
+        let next = gen.next();
+
+        while (!next.done || next.value !== undefined) {
+            if (next.value && typeof next.value === 'object' && ('action' in next.value || 'type' in next.value)) {
+                // Ensure action is populated for backward compatibility with 'type'
+                const step = next.value as any;
+                if (!step.action && step.type) step.action = step.type;
+                allSteps.push(step as AlgorithmStep);
+            }
+            if (next.done) break;
+            next = gen.next();
+        }
+
+        setStepsHistory(allSteps);
         setCurrentStepIndex(-1);
         setIsPlaying(false);
     }, [generatorFn]);
@@ -25,23 +37,7 @@ export function useStepPlayer<T>(generatorFn: () => Generator<AlgorithmStep, T, 
             setCurrentStepIndex(prev => prev + 1);
             return true;
         }
-
-        if (generatorRef.current) {
-            const next = generatorRef.current.next();
-            if (!next.done || next.value !== undefined) {
-                if (next.value && typeof next.value === 'object' && 'type' in next.value) {
-                    setStepsHistory(prev => [...prev, next.value as AlgorithmStep]);
-                    setCurrentStepIndex(prev => prev + 1);
-                    return true;
-                } else if (next.value !== undefined) {
-                    const finalStep: AlgorithmStep = { type: 'done', message: `Final result: ${typeof next.value === 'object' ? JSON.stringify(next.value) : next.value}` };
-                    setStepsHistory(prev => [...prev, finalStep]);
-                    setCurrentStepIndex(prev => prev + 1);
-                }
-            } else {
-                setIsPlaying(false);
-            }
-        }
+        setIsPlaying(false);
         return false;
     }, [currentStepIndex, stepsHistory.length]);
 

@@ -6,7 +6,11 @@ export interface Candidate {
 }
 
 export function* topKHeap(k: number, candidates: Candidate[]): Generator<AlgorithmStep, Candidate[], unknown> {
-    yield { type: 'info', message: `Initializing Min-Heap of size K = ${k}.`, codeLine: 1 };
+    yield {
+        stepIndex: 0, totalSteps: 0, action: 'info',
+        stepExplanation: `Initializing a Min-Heap of bounded size K = ${k}. A Min-Heap allows us to cheaply discard the lowest scores on the fly while retaining the highest scores without storing the whole graph.`,
+        codeLine: 1
+    };
 
     const heap: Candidate[] = [];
 
@@ -41,18 +45,52 @@ export function* topKHeap(k: number, candidates: Candidate[]): Generator<Algorit
 
     for (let i = 0; i < candidates.length; i++) {
         const candidate = candidates[i];
-        yield { type: 'highlight', highlightNodes: [candidate.id], message: `Evaluating candidate ${candidate.id} with score ${candidate.score.toFixed(2)}.`, codeLine: 3 };
+
+        yield {
+            stepIndex: 0, totalSteps: 0, action: 'visit',
+            highlightNodes: [candidate.id],
+            currentNode: candidate.id,
+            queueContents: heap.map(h => `${h.id}(${h.score.toFixed(2)})`),
+            stepExplanation: `Processing candidate ${candidate.id} having score ${candidate.score.toFixed(2)}.`,
+            codeLine: 3
+        };
 
         if (heap.length < k) {
             push(candidate);
-            yield { type: 'info', highlightNodes: [candidate.id], message: `Heap has room (< ${k}). Pushed ${candidate.id}. Heap min is now ${heap[0].score.toFixed(2)}.`, codeLine: 5 };
+            yield {
+                stepIndex: 0, totalSteps: 0, action: 'enqueue',
+                highlightNodes: [candidate.id],
+                currentNode: candidate.id,
+                queueContents: heap.map(h => `${h.id}(${h.score.toFixed(2)})`),
+                stepExplanation: `Heap array length (${heap.length}) is strictly less than K (${k}). Appending candidate. Min root is now ${heap[0].score.toFixed(2)}.`,
+                codeLine: 5
+            };
         } else {
             if (candidate.score > heap[0].score) {
-                yield { type: 'info', message: `${candidate.score.toFixed(2)} > min node ${heap[0].score.toFixed(2)}. Replacing min.`, codeLine: 7 };
+                yield {
+                    stepIndex: 0, totalSteps: 0, action: 'dequeue',
+                    currentNode: candidate.id,
+                    queueContents: heap.map(h => `${h.id}(${h.score.toFixed(2)})`),
+                    stepExplanation: `Candidate score ${candidate.score.toFixed(2)} is strictly greater than the absolute smallest heap element ${heap[0].score.toFixed(2)}. Popping the smallest element out.`,
+                    codeLine: 7
+                };
                 pop();
                 push(candidate);
+                yield {
+                    stepIndex: 0, totalSteps: 0, action: 'enqueue',
+                    currentNode: candidate.id,
+                    queueContents: heap.map(h => `${h.id}(${h.score.toFixed(2)})`),
+                    stepExplanation: `Replacing previous root with new candidate ${candidate.id}. The heap rearranges itself organically.`,
+                    codeLine: 7
+                };
             } else {
-                yield { type: 'info', message: `${candidate.score.toFixed(2)} <= min node ${heap[0].score.toFixed(2)}. Discarding.`, codeLine: 9 };
+                yield {
+                    stepIndex: 0, totalSteps: 0, action: 'skip',
+                    currentNode: candidate.id,
+                    queueContents: heap.map(h => `${h.id}(${h.score.toFixed(2)})`),
+                    stepExplanation: `Candidate score ${candidate.score.toFixed(2)} is worse than or equal to the minimum acceptable score ${heap[0].score.toFixed(2)}. Discarding immediately without memory allocation.`,
+                    codeLine: 9
+                };
             }
         }
     }
@@ -60,6 +98,12 @@ export function* topKHeap(k: number, candidates: Candidate[]): Generator<Algorit
     // Sort descending for final result
     heap.sort((a, b) => b.score - a.score);
 
-    yield { type: 'done', message: `Finished. Top K heap contains best ${heap.length} candidates.`, codeLine: 13 };
+    yield {
+        stepIndex: 0, totalSteps: 0, action: 'done',
+        queueContents: heap.map(h => `${h.id}(${h.score.toFixed(2)})`),
+        stepExplanation: `Finished. The heap exclusively isolated the universally best ${heap.length} candidates in O(N log K) time.`,
+        codeLine: 13
+    };
+
     return heap;
 }
