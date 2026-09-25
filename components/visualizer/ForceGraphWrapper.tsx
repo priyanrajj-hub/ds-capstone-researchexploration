@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState, useEffect } from 'react';
 import ForceGraph3D, { ForceGraphMethods } from 'react-force-graph-3d';
 import * as THREE from 'three';
 import SpriteText from 'three-spritetext';
@@ -14,7 +14,21 @@ interface WrapperProps {
 
 export default function ForceGraphWrapper({ graph, currentStep, onNodeClick }: WrapperProps) {
     const fgRef = useRef<ForceGraphMethods>();
+    const containerRef = useRef<HTMLDivElement>(null);
     const [initialZoomDone, setInitialZoomDone] = useState(false);
+    const [dimensions, setDimensions] = useState({ width: 800, height: 500 });
+
+    useEffect(() => {
+        if (!containerRef.current) return;
+        const observer = new ResizeObserver((entries) => {
+            if (entries[0]) {
+                const { width, height } = entries[0].contentRect;
+                if (width > 0 && height > 0) setDimensions({ width, height });
+            }
+        });
+        observer.observe(containerRef.current);
+        return () => observer.disconnect();
+    }, []);
 
     const graphData = useMemo(() => {
         const extractedLinks: { source: string, target: string }[] = [];
@@ -55,45 +69,53 @@ export default function ForceGraphWrapper({ graph, currentStep, onNodeClick }: W
     }
 
     return (
-        <ForceGraph3D
-            ref={fgRef as any}
-            graphData={graphData}
-            nodeResolution={32}
-            nodeColor={getNodeColor}
-            linkColor={getLinkColor}
-            linkWidth={(link: any) => {
-                const u = link.source.id || link.source;
-                const v = link.target.id || link.target;
-                const hl = currentStep?.highlightEdges?.some(e => (e.u === u && e.v === v) || (e.v === u && e.u === v));
-                return hl ? 3 : 1;
-            }}
-            nodeThreeObjectExtend={true}
-            nodeThreeObject={(node: any) => {
-                if (node.id === 'A') {
-                    console.log(`[DEBUG] Node A pos:`, node.x, node.y, node.z);
-                }
-                const sprite = new SpriteText(node.name);
-                sprite.color = '#ffffff';
-                sprite.textHeight = 4;
-                sprite.position.y = 8;
-                return sprite;
-            }}
-            onEngineStop={() => {
-                if (!initialZoomDone && fgRef.current) {
-                    const N = graphData.nodes.length;
-                    if (N > 0) {
-                        try {
-                            fgRef.current.zoomToFit(800, 40);
-                        } catch (e) {
-                            console.error("ZoomToFit bounds failed", e);
+        <div ref={containerRef} className="w-full h-full relative">
+            {graphData.nodes.length > 0 ? (
+                <ForceGraph3D
+                    ref={fgRef as any}
+                    width={dimensions.width}
+                    height={dimensions.height}
+                    graphData={graphData}
+                    nodeResolution={32}
+                    nodeColor={getNodeColor}
+                    linkColor={getLinkColor}
+                    linkWidth={(link: any) => {
+                        const u = link.source.id || link.source;
+                        const v = link.target.id || link.target;
+                        const hl = currentStep?.highlightEdges?.some(e => (e.u === u && e.v === v) || (e.v === u && e.u === v));
+                        return hl ? 3 : 1;
+                    }}
+                    nodeThreeObjectExtend={true}
+                    nodeThreeObject={(node: any) => {
+                        if (node.id === 'A') {
+                            console.log(`[DEBUG] Node A pos:`, node.x, node.y, node.z);
                         }
-                    }
-                    setInitialZoomDone(true);
-                }
-            }}
-            onNodeClick={(node: any) => onNodeClick?.(node.id)}
-            backgroundColor="rgba(0,0,0,0)"
-            showNavInfo={false}
-        />
+                        const sprite = new SpriteText(node.name);
+                        sprite.color = '#ffffff';
+                        sprite.textHeight = 4;
+                        sprite.position.y = 8;
+                        return sprite;
+                    }}
+                    onEngineStop={() => {
+                        if (!initialZoomDone && fgRef.current) {
+                            const N = graphData.nodes.length;
+                            if (N > 0) {
+                                try {
+                                    fgRef.current.zoomToFit(800, 40);
+                                } catch (e) {
+                                    console.error("ZoomToFit bounds failed", e);
+                                }
+                            }
+                            setInitialZoomDone(true);
+                        }
+                    }}
+                    onNodeClick={(node: any) => onNodeClick?.(node.id)}
+                    backgroundColor="rgba(0,0,0,0)"
+                    showNavInfo={false}
+                />
+            ) : (
+                <div className="flex items-center justify-center w-full h-full text-teal font-bold animate-pulse absolute inset-0">Initializing Visualization Core...</div>
+            )}
+        </div>
     );
 }
