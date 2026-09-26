@@ -41,7 +41,7 @@ export function PlaybackControls({ isPlaying, setIsPlaying, stepForward, stepBac
             </div>
             <div className="flex items-center gap-4 bg-white/5 p-4 rounded-xl border border-white/10" role="toolbar" aria-label="Playback Controls">
                 <button aria-label="Step Back" onClick={stepBack} className="p-2 hover:bg-white/10 rounded-full text-white transition-colors focus:ring-2 disabled:opacity-50" disabled={currentStepIndex < 0}><SkipBack size={20} /></button>
-                <button aria-label={isPlaying ? 'Pause' : 'Play'} onClick={() => setIsPlaying(!isPlaying)} className={`p-3 rounded-full text-white shadow-lg transition-colors focus:ring-2 ${isFinished ? 'bg-orange-500 hover:bg-orange-600' : 'bg-teal hover:bg-ocean'}`} disabled={isFinished && !isPlaying}>
+                <button aria-label={isPlaying ? 'Pause' : 'Play'} onClick={() => setIsPlaying(!isPlaying)} className={`p-3 rounded-full shadow-lg transition-colors focus:ring-2 ${isFinished ? 'bg-orange-500 hover:bg-orange-600 text-white' : 'bg-teal hover:bg-ocean text-black'}`} disabled={isFinished && !isPlaying}>
                     {isFinished ? <RotateCcw size={24} onClick={(e) => { e.stopPropagation(); reset(); setIsPlaying(true); }} /> : isPlaying ? <Pause size={24} /> : <Play size={24} />}
                 </button>
                 <button aria-label="Step Forward" onClick={stepForward} className="p-2 hover:bg-white/10 rounded-full text-white transition-colors focus:ring-2 disabled:opacity-50" disabled={isFinished}><SkipForward size={20} /></button>

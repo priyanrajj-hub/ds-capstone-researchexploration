@@ -80,10 +80,10 @@ export function GraphCanvas({ graph, onGraphChange, currentStep, onNodeClick }: 
         <div className="w-full h-full relative min-h-[500px]">
             {/* Toggle Overlay */}
             <div className="absolute top-4 left-4 z-10 flex bg-navy/80 rounded-lg p-1 border border-white/10 backdrop-blur">
-                <button onClick={() => setIs3D(false)} className={`flex items-center gap-1 px-3 py-1.5 rounded-md text-xs font-bold transition-all ${!is3D ? 'bg-teal text-white shadow-lg' : 'text-gray-400 hover:text-white'}`}>
+                <button onClick={() => setIs3D(false)} className={`flex items-center gap-1 px-3 py-1.5 rounded-md text-xs font-bold transition-all ${!is3D ? 'bg-teal text-black shadow-lg' : 'text-gray-400 hover:text-white'}`}>
                     <Layers size={14} /> 2D SVG
                 </button>
-                <button onClick={() => setIs3D(true)} className={`flex items-center gap-1 px-3 py-1.5 rounded-md text-xs font-bold transition-all ${is3D ? 'bg-teal text-white shadow-lg' : 'text-gray-400 hover:text-white'}`}>
+                <button onClick={() => setIs3D(true)} className={`flex items-center gap-1 px-3 py-1.5 rounded-md text-xs font-bold transition-all ${is3D ? 'bg-teal text-black shadow-lg' : 'text-gray-400 hover:text-white'}`}>
                     <Box size={14} /> 3D WebGL
                 </button>
             </div>
