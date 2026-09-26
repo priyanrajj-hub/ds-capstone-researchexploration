@@ -50,7 +50,7 @@ export default function LandingPage() {
                     Interactive visualizations for industrial-scale friend recommendation systems and real-time graph engines.
                 </h2>
                 <div className="pt-4">
-                    <Link href="/algorithms/bfs-nhop" className="inline-block px-8 py-4 bg-teal text-white font-bold rounded-full shadow-lg hover:bg-ocean transition-all">
+                    <Link href="/algorithms/bfs-nhop" className="inline-block px-8 py-4 bg-teal text-black font-bold rounded-full shadow-lg hover:bg-ocean transition-all">
                         Start Learning
                     </Link>
                 </div>

@@ -114,7 +114,7 @@ export default function AlgorithmLayout({ content }: AlgorithmLayoutProps) {
                             <button
                                 key={tab}
                                 onClick={() => setActiveTab(tab as any)}
-                                className={`flex-1 text-sm font-bold py-2 rounded-lg transition-colors capitalize ${activeTab === tab ? 'bg-teal text-white shadow' : 'text-gray-400 hover:text-white'}`}
+                                className={`flex-1 text-sm font-bold py-2 rounded-lg transition-colors capitalize ${activeTab === tab ? 'bg-teal text-black shadow' : 'text-gray-400 hover:text-white'}`}
                             >
                                 {tab}
                             </button>
